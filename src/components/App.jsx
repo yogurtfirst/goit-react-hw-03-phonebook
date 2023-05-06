@@ -10,6 +10,16 @@ export class App extends Component {
         filter: '',
     };
 
+    componentDidMount() {
+        const contacts = JSON.parse(localStorage.getItem('contacts'));
+        if (contacts) this.setState({ contacts });
+    };
+
+    componentDidUpdate(prevProps, prevState) {
+        const contacts = JSON.stringify(this.state.contacts);
+        if (prevState.contacts !== this.state.contacts) localStorage.setItem('contacts', contacts);
+    }
+
     addContact = contact => {
         this.setState(previous => ({
             contacts: [...previous.contacts, { ...contact, id: nanoid() }],
